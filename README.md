@@ -5,6 +5,8 @@
 
 ### 用法：
 
+
+
 依赖：
 ```java
 repositories {
@@ -50,7 +52,7 @@ dependencies{
 ###效果图如下
 
 <p align="center">
-<img src="screen/aaa.gif" width="320px"/>
+<img src="images/aaa.gif" width="320px"/>
 </p>
 
 
