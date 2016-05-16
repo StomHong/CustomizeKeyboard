@@ -1,25 +1,58 @@
-# CustomizeKeyboard
-#自定义Android数字键盘Demo
+#自定义Android键盘
 
-##仿造android端闲鱼发布商品时候选择价格 弹出的数字键盘。
+##由于项目需要临时写了个自定义安全键盘
 
 
-###闲鱼效果图
+### 用法：
+
+依赖：
+```java
+repositories {
+    jcenter()
+    maven { url "https://dl.bintray.com/ziyeyouhu/maven" }
+    }
+
+dependencies{
+    compile 'compile 'com.ziyeyouhu:customizekeyboard:1.0.0'
+}
+```
+
+初始化  
+
+```java
+ private void initMoveKeyBoard() {
+         keyboardUtil = new KeyboardUtil(this, rootView, scrollView);
+         keyboardUtil.setOtherEdittext(normalEd);
+         // monitor the KeyBarod state
+         keyboardUtil.setKeyBoardStateChangeListener(new KeyBoardStateListener());
+         // monitor the finish or next Key
+         keyboardUtil.setInputOverListener(new inputOverListener());
+         specialEd.setOnTouchListener(new KeyboardTouchListener(keyboardUtil, KeyboardUtil.INPUTTYPE_ABC, -1));
+     }
+```
+
+关于键盘输入状态
+        
+   
+```java
+     public static int inputType = 1;                   // 默认
+     public static final int INPUTTYPE_NUM = 1;         // 数字，右下角 为空
+     public static final int INPUTTYPE_NUM_FINISH = 2;  // 数字，右下角 完成
+     public static final int INPUTTYPE_NUM_POINT = 3;   // 数字，右下角 为点
+     public static final int INPUTTYPE_NUM_X = 4;       // 数字，右下角 为X
+     public static final int INPUTTYPE_NUM_NEXT = 5;    // 数字，右下角 为下一个
+     public static final int INPUTTYPE_ABC = 6;         // 一般的abc
+     public static final int INPUTTYPE_SYMBOL = 7;      // 标点键盘
+     public static final int INPUTTYPE_NUM_ABC = 8;     // 数字，右下角 为下一个
+```
+
+
+###效果图如下
+
 <p align="center">
-<img src="screen/screen.png" width="320px"/>
+<img src="screen/aaa.gif" width="320px"/>
 </p>
 
-###自己写的Demo效果图如下
 
-<p align="center">
-<img src="screen/screen_01.png" width="320px"/>
-</p>
-<p align="center">
-<img src="screen/screen_gif.gif" width="320px"/>
-</p>
-
-使用的android系统的api，keyboardview和keyboard，
-
-本来想把确定按钮也按闲鱼一样改成蓝色的，无奈stackoverflow逛了一圈也没有找到有效的方法。
 
 
