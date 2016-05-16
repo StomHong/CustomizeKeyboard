@@ -59,6 +59,7 @@ public class PpKeyBoardView extends KeyboardView {
     //数字键盘
     private void drawNumSpecialKey(Key key, Canvas canvas) {
         if (key.codes[0] == -5) {
+
             drawKeyBackground(R.drawable.btn_keyboard_key_num_delete, canvas, key);
         }
 

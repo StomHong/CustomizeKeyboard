@@ -1,4 +1,4 @@
-package com.ziyeyouhu.customizekeyboard;
+package com.ziyeyouhu.customkeyboard;
 
 import org.junit.Test;
 

@@ -13,7 +13,7 @@ repositories {
     }
 
 dependencies{
-    compile 'compile 'com.ziyeyouhu:customizekeyboard:1.0.0'
+    compile 'compile'com.ziyeyouhu:customizekeyboard:1.0.0'
 }
 ```
 
