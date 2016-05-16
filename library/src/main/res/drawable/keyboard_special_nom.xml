@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <solid android:color="#BABDC1" />
+
+    <!-- 描边 ：边框宽度与颜色 -->
+    <stroke
+        android:width="0.5dip"
+        android:color="#bababa" />
+
+    <!--
+圆角的半径  也可以统一设置半径 android:radius="9dip" 
+		 android:topRightRadius="20dp" 右上角  
+     	 android:bottomLeftRadius="20dp"    右下角  
+         android:topLeftRadius="1dp"    左上角  
+     	 android:bottomRightRadius="0dp"    左下角
+    -->
+    <corners android:radius="0px" />
+    <!--
+	渐变 
+    <gradient
+        android:angle="270"
+        android:endColor="#FFFFFF"
+        android:startColor="#ff8c00" />
+    -->
+
+</shape>

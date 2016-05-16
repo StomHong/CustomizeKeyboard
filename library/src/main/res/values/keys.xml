@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!-- ! -->
+    <string name="char_33">&#033;</string>
+    <!-- " -->
+    <string name="char_34">\&#034;</string>
+    <!-- # -->
+    <string name="char_35">\&#035;</string>
+    <!-- $ -->
+    <string name="char_36">&#036;</string>
+    <!-- % -->
+    <string name="char_37">&#037;</string>
+    <!-- & -->
+    <string name="char_38">&#038;</string>
+    <!-- ' -->
+    <string name="char_39">\&#039;</string>
+    <!-- ( -->
+    <string name="char_40">&#040;</string>
+    <!-- ) -->
+    <string name="char_41">&#041;</string>
+    <!-- * -->
+    <string name="char_42">&#042;</string>
+    <!-- + -->
+    <string name="char_43">&#043;</string>
+    <!-- , -->
+    <string name="char_44">&#044;</string>
+    <!-- - -->
+    <string name="char_45">&#045;</string>
+    <!-- . -->
+    <string name="char_46">&#046;</string>
+    <!-- / -->
+    <string name="char_47">&#047;</string>
+    <!-- : -->
+    <string name="char_58">&#058;</string>
+    <!-- ; -->
+    <string name="char_59">&#059;</string>
+    <!-- < -->
+    <string name="char_60">&#060;</string>
+    <!-- = -->
+    <string name="char_61">&#061;</string>
+    <!-- > -->
+    <string name="char_62">&#062;</string>
+    <!-- ? -->
+    <string name="char_63">\&#063;</string>
+    <!-- @ -->
+    <string name="char_64">\&#064;</string>
+    <!-- [ -->
+    <string name="char_91">&#091;</string>
+    <!-- \ -->
+    <string name="char_92">\&#092;</string>
+    <!-- ] -->
+    <string name="char_93">&#093;</string>
+    <!-- ^ -->
+    <string name="char_94">&#094;</string>
+    <!-- _ -->
+    <string name="char_95">&#095;</string>
+    <!-- ` -->
+    <string name="char_96">&#096;</string>
+    <!-- { -->
+    <string name="char_123">&#0123;</string>
+    <!-- | -->
+    <string name="char_124">&#0124;</string>
+    <!-- } -->
+    <string name="char_125">&#0125;</string>
+    <!-- ~ -->
+    <string name="char_126">&#0126;</string>
+
+    <!-- 123 -->
+    <string name="char123">123</string>
+
+    <!-- ABC -->
+    <string name="char_abc">ABC</string>
+
+    <!-- ¥ -->
+    <string name="char_renmingbi">¥</string>
+
+    <!-- £ -->
+    <string name="char_pound">£</string>
+
+    <!-- · -->
+    <string name="char_bigPoint">·</string>
+
+    <string name="strsign1">\\</string>
+    <string name="strsign2">\"</string>
+
+
+</resources>
