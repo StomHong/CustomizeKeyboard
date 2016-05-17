@@ -9,13 +9,9 @@
 
 依赖：
 ```java
-repositories {
-    jcenter()
-    maven { url "https://dl.bintray.com/ziyeyouhu/maven" }
-    }
 
 dependencies{
-    compile 'compile'com.ziyeyouhu:customizekeyboard:1.0.0'
+   compile 'com.ziyeyouhu:customizekeyboard:1.0.0'
 }
 ```
 
@@ -52,7 +48,7 @@ dependencies{
 ###效果图如下
 
 <p align="center">
-<img src="images/aaa.gif" width="320px"/>
+<img src="images/aaa.gif" />
 </p>
 
 
