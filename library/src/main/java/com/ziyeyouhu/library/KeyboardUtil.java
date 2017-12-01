@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -71,6 +72,7 @@ public class KeyboardUtil {
     private TextView keyboard_tips_tv;
     private static final float TIPS_MARGIN_W = 0.0407f;
     private View inflaterView;
+    private ImageView mIVClose;
 
     /**
      * 最新构造方法，现在都用这个
@@ -124,12 +126,14 @@ public class KeyboardUtil {
         LinearLayout.LayoutParams keyboard_layoutlLayoutParams = (LinearLayout.LayoutParams) layoutView
                 .getLayoutParams();
         RelativeLayout TopLayout = (RelativeLayout) layoutView.findViewById(R.id.keyboard_view_top_rl);
-        keyboard_tips_tv = (TextView) layoutView.findViewById(R.id.keyboard_tips_tv);
-        TextView keyboard_view_finish = (TextView) layoutView.findViewById(R.id.keyboard_view_finish);
-        setMargins(keyboard_tips_tv, (int) (widthPixels * TIPS_MARGIN_W), 0, 0, 0);
-        keyboard_tips_tv.setVisibility(View.VISIBLE);
-        setMargins(keyboard_view_finish, 0, 0, (int) (widthPixels * TIPS_MARGIN_W), 0);
-        keyboard_view_finish.setOnClickListener(new finishListener());
+        mIVClose = (ImageView) layoutView.findViewById(R.id.iv_close);
+        mIVClose.setOnClickListener(new finishListener());
+//        keyboard_tips_tv = (TextView) layoutView.findViewById(R.id.keyboard_tips_tv);
+//        TextView keyboard_view_finish = (TextView) layoutView.findViewById(R.id.keyboard_view_finish);
+//        setMargins(keyboard_tips_tv, (int) (widthPixels * TIPS_MARGIN_W), 0, 0, 0);
+//        keyboard_tips_tv.setVisibility(View.VISIBLE);
+//        setMargins(keyboard_view_finish, 0, 0, (int) (widthPixels * TIPS_MARGIN_W), 0);
+//        keyboard_view_finish.setOnClickListener(new finishListener());
         if (keyboard_layoutlLayoutParams == null) {
             int height = (int) (mActivity.getResources().getDisplayMetrics().heightPixels * SIZE.KEYBOARY_H);
             layoutView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, height));

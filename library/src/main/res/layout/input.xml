@@ -11,29 +11,13 @@
         android:visibility="visible"
         android:layout_height="40dp">
 
-        <TextView
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_height="35dp"
+            android:layout_width="20dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/arrows_down"/>
 
-            android:id="@+id/keyboard_tips_tv"
-            android:text="航运通安全键盘"
-            android:textColor="@color/app_style"
-
-            android:drawablePadding="5dp"
-
-            android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
-
-        <TextView
-            android:layout_marginRight="10dp"
-            android:text="完成"
-            android:id="@+id/keyboard_view_finish"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/txt_orange"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <RelativeLayout

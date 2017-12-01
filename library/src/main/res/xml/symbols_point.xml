@@ -3,8 +3,8 @@
     android:horizontalGap="0px"
     android:keyHeight="8.5%p"
     android:keyWidth="33.333333%p"
-    android:verticalGap="0px" >
-    
+    android:verticalGap="0px">
+
     <Row>
         <Key
             android:codes="49"
@@ -46,9 +46,8 @@
             android:codes="48"
             android:keyLabel="0" />
         <Key
-            android:isRepeatable="true"
             android:codes="-5"
-            />
+            android:isRepeatable="true" />
     </Row>
 
 </Keyboard>
