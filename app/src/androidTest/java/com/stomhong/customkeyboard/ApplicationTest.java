@@ -1,4 +1,4 @@
-package com.ziyeyouhu.customkeyboard;
+package com.stomhong.customkeyboard;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
