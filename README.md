@@ -11,9 +11,11 @@
 ```java
 
 dependencies{
-   compile 'com.ziyeyouhu:customizekeyboard:1.0.0'
+   compile 'com.stomhong:customizekeyboard:1.0.1'
 }
 ```
+
+###1.0.1更新说明：去掉了键盘头部“安全键盘文字”，更改了包名
 
 初始化  
 
