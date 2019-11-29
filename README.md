@@ -9,7 +9,7 @@
 ```java
 
 dependencies{
-   compile 'com.stomhong:customizekeyboard:1.0.1'
+   implementation 'com.stomhong:customizekeyboard:1.0.1'
 }
 ```
 

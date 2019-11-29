@@ -1,4 +1,4 @@
-package com.ziyeyouhu.library;
+package com.stomhong.library;
 
 import android.view.MotionEvent;
 import android.view.View;

@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp">
         <!-- 普通数字键盘样式 -->
-        <com.ziyeyouhu.library.PpKeyBoardView
+        <com.stomhong.library.PpKeyBoardView
             android:id="@+id/keyboard_view"
             android:layout_weight="1"
             android:layout_centerInParent="true"
@@ -43,7 +43,7 @@
             android:shadowRadius="0.0"
             android:visibility="gone" />
         <!-- 字母键盘样式 -->
-        <com.ziyeyouhu.library.PpKeyBoardView
+        <com.stomhong.library.PpKeyBoardView
             android:id="@+id/keyboard_view_abc_sym"
             android:layout_centerInParent="true"
             android:layout_width="match_parent"

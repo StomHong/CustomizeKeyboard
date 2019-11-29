@@ -1,14 +1,14 @@
-package com.ziyeyouhu.customkeyboard;
+package com.stomhong.customkeyboard;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.ziyeyouhu.library.KeyboardTouchListener;
-import com.ziyeyouhu.library.KeyboardUtil;
+import com.stomhong.library.KeyboardTouchListener;
+import com.stomhong.library.KeyboardUtil;
 
 public class MainActivity extends AppCompatActivity {
 
