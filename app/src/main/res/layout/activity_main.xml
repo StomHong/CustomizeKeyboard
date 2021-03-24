@@ -26,8 +26,7 @@
                 android:id="@+id/special_ed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="特殊键盘"
-                android:inputType="numberPassword"/>
+                android:hint="特殊键盘" />
 
             <TextView
                 android:id="@+id/other_test"
