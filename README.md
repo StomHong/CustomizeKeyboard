@@ -1,13 +1,29 @@
 # 自定义Android键盘
 
+[![](https://jitpack.io/v/StomHong/CustomizeKeyboard.svg)](https://jitpack.io/#StomHong/CustomizeKeyboard)
 
 ### 用法：
 
-
-
-依赖：
 ```java
 
+allprojects {
+    repositories {
+        maven { url "https://www.jitpack.io" }
+    }
+}
+
+buildscript {
+    repositories {
+        maven { url "https://www.jitpack.io" }
+    }
+}
+
+//新依赖地址
+dependencies{
+   implementation 'com.github.StomHong:CustomizeKeyboard:1.0.1'
+}
+
+//旧依赖地址
 dependencies{
    implementation 'com.stomhong:customizekeyboard:1.0.1'
 }
