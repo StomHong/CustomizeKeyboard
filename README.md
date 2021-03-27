@@ -20,12 +20,9 @@ buildscript {
 
 //新依赖地址
 dependencies{
-   implementation 'com.github.StomHong:CustomizeKeyboard:1.0.1'
+   implementation 'com.github.StomHong:CustomizeKeyboard:1.0.2'
 }
 
-//旧依赖地址
-dependencies{
-   implementation 'com.stomhong:customizekeyboard:1.0.1'
 }
 ```
 
@@ -34,15 +31,15 @@ dependencies{
 初始化  
 
 ```java
- private void initMoveKeyBoard() {
-         keyboardUtil = new KeyboardUtil(this, rootView, scrollView);
-         keyboardUtil.setOtherEdittext(normalEd);
-         // monitor the KeyBarod state
-         keyboardUtil.setKeyBoardStateChangeListener(new KeyBoardStateListener());
-         // monitor the finish or next Key
-         keyboardUtil.setInputOverListener(new inputOverListener());
-         specialEd.setOnTouchListener(new KeyboardTouchListener(keyboardUtil, KeyboardUtil.INPUTTYPE_ABC, -1));
-     }
+    private void initMoveKeyBoard() {
+        keyboardUtil = new KeyboardUtil(this);
+        keyboardUtil.setOtherEdittext(normalEd);
+        // monitor the KeyBarod state
+        keyboardUtil.setKeyBoardStateChangeListener(new KeyBoardStateListener());
+        // monitor the finish or next Key
+        keyboardUtil.setInputOverListener(new inputOverListener());
+        specialEd.setOnTouchListener(new KeyboardTouchListener(keyboardUtil, KeyboardUtil.INPUTTYPE_ABC));
+    }
 ```
 
 关于键盘输入状态

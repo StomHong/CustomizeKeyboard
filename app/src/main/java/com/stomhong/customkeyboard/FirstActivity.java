@@ -52,7 +52,7 @@ public class FirstActivity extends AppCompatActivity {
         keyboardUtil.setKeyBoardStateChangeListener(new KeyBoardStateListener());
         // monitor the finish or next Key
         keyboardUtil.setInputOverListener(new inputOverListener());
-        specialEd.setOnTouchListener(new KeyboardTouchListener(keyboardUtil, KeyboardUtil.INPUTTYPE_ABC, -1));
+        specialEd.setOnTouchListener(new KeyboardTouchListener(keyboardUtil, KeyboardUtil.INPUTTYPE_ABC));
     }
 
     class KeyBoardStateListener implements KeyboardUtil.KeyBoardStateChangeListener {
