@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/normal_ed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="普通键盘" />
+
+        <EditText
+            android:id="@+id/special_ed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="特殊键盘" />
+
+        <TextView
+            android:id="@+id/other_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/content"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+</ScrollView>

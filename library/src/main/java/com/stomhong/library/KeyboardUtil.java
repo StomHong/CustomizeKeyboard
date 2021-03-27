@@ -1,29 +1,26 @@
 package com.stomhong.library;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.Handler;
-import android.os.Message;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Selection;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -34,18 +31,19 @@ public class KeyboardUtil {
     private Context mContext;
     private int widthPixels;
     private Activity mActivity;
+    private FrameLayout mRootView;
     private PpKeyBoardView keyboardView;
     public static Keyboard abcKeyboard;// 字母键盘
     public static Keyboard symbolKeyboard;// 字母键盘
     public static Keyboard numKeyboard;// 数字键盘
     public static Keyboard keyboard;//提供给keyboardView 进行画
 
-    public boolean isupper = false;// 是否大写
+    public boolean isUpper = false;// 是否大写
     public boolean isShow = false;
     InputFinishListener inputOver;
     KeyBoardStateChangeListener keyBoardStateChangeListener;
-    private View layoutView;
-    private View keyBoardLayout;
+    private LinearLayout layoutView;
+    private LinearLayout keyBoardLayout;
 
     // 开始输入的键盘状态设置
     public static int inputType = 1;// 默认
@@ -63,40 +61,22 @@ public class KeyboardUtil {
     public static final int KEYBOARD_HIDE = 2;
 
     private EditText ed;
-    private Handler mHandler;
     private Handler showHandler;
-    private ScrollView sv_main;
-    private View root_view;
-    private int scrollTo = 0;
     private KeyboardUtil mKeyboardUtil;
-    private TextView keyboard_tips_tv;
-    private static final float TIPS_MARGIN_W = 0.0407f;
-    private View inflaterView;
-    private ImageView mIVClose;
+    private ImageView ivClose;
 
     /**
      * 最新构造方法，现在都用这个
      *
-     * @param ctx
-     * @param rootView rootView 需要是LinearLayout,以适应键盘
+     * @param context //* @param rootView rootView 需要是LinearLayout,以适应键盘
      */
-    public KeyboardUtil(Context ctx, LinearLayout rootView, ScrollView scrollView) {
-        this.mContext = ctx;
+    public KeyboardUtil(Context context) {
+        this.mContext = context;
         this.mActivity = (Activity) mContext;
+        this.mRootView = ((Activity)mContext).getWindow().getDecorView().findViewById(android.R.id.content);
         widthPixels = mContext.getResources().getDisplayMetrics().widthPixels;
-        initKeyBoardView(rootView);
-        initScrollHandler(rootView, scrollView);
+        initKeyBoardView();
         mKeyboardUtil = this;
-    }
-
-    /**
-     * 弹框类，用这个
-     *
-     * @param view 是弹框的inflaterView
-     */
-    public KeyboardUtil(View view, Context ctx, LinearLayout root_View, ScrollView scrollView) {
-        this(ctx, root_View, scrollView);
-        this.inflaterView = view;
     }
 
     //设置监听事件
@@ -108,15 +88,18 @@ public class KeyboardUtil {
         return keyboard;
     }
 
-    private void initKeyBoardView(LinearLayout rootView) {
+    private void initKeyBoardView() {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        keyBoardLayout = inflater.inflate(R.layout.input, null);
+        keyBoardLayout = (LinearLayout) inflater.inflate(R.layout.input, null);
 
         keyBoardLayout.setVisibility(View.GONE);
         keyBoardLayout.setBackgroundColor(mActivity.getResources().getColor(R.color.product_list_bac));
         initLayoutHeight((LinearLayout) keyBoardLayout);
         this.layoutView = keyBoardLayout;
-        rootView.addView(keyBoardLayout);
+        mRootView.addView(keyBoardLayout);
+        FrameLayout.LayoutParams textParams = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
+        keyBoardLayout.setLayoutParams(textParams);
 
         if (keyBoardLayout != null && keyBoardLayout.getVisibility() == View.VISIBLE)
             Log.d("KeyboardUtil", "visible");
@@ -126,14 +109,8 @@ public class KeyboardUtil {
         LinearLayout.LayoutParams keyboard_layoutlLayoutParams = (LinearLayout.LayoutParams) layoutView
                 .getLayoutParams();
         RelativeLayout TopLayout = (RelativeLayout) layoutView.findViewById(R.id.keyboard_view_top_rl);
-        mIVClose = (ImageView) layoutView.findViewById(R.id.iv_close);
-        mIVClose.setOnClickListener(new finishListener());
-//        keyboard_tips_tv = (TextView) layoutView.findViewById(R.id.keyboard_tips_tv);
-//        TextView keyboard_view_finish = (TextView) layoutView.findViewById(R.id.keyboard_view_finish);
-//        setMargins(keyboard_tips_tv, (int) (widthPixels * TIPS_MARGIN_W), 0, 0, 0);
-//        keyboard_tips_tv.setVisibility(View.VISIBLE);
-//        setMargins(keyboard_view_finish, 0, 0, (int) (widthPixels * TIPS_MARGIN_W), 0);
-//        keyboard_view_finish.setOnClickListener(new finishListener());
+        ivClose = (ImageView) layoutView.findViewById(R.id.iv_close);
+        ivClose.setOnClickListener(new finishListener());
         if (keyboard_layoutlLayoutParams == null) {
             int height = (int) (mActivity.getResources().getDisplayMetrics().heightPixels * SIZE.KEYBOARY_H);
             layoutView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, height));
@@ -152,17 +129,6 @@ public class KeyboardUtil {
         }
     }
 
-    private void setMargins(View view, int left, int top, int right, int bottom) {
-        if (view.getLayoutParams() instanceof RelativeLayout.LayoutParams) {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
-                    .getLayoutParams();
-            layoutParams.setMargins(left, top, right, bottom);
-        } else if (view.getLayoutParams() instanceof LinearLayout.LayoutParams) {
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view
-                    .getLayoutParams();
-            layoutParams.setMargins(left, top, right, bottom);
-        }
-    }
 
     public boolean setKeyBoardCursorNew(EditText edit) {
         this.ed = edit;
@@ -172,13 +138,9 @@ public class KeyboardUtil {
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
         boolean isOpen = imm.isActive();// isOpen若返回true，则表示输入法打开
         if (isOpen) {
-//			((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(mActivity.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
             if (imm.hideSoftInputFromWindow(edit.getWindowToken(), 0))
                 flag = true;
         }
-
-//		act.getWindow().setSoftInputMode(
-//				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         int currentVersion = android.os.Build.VERSION.SDK_INT;
         String methodName = null;
         if (currentVersion >= 16) {
@@ -235,41 +197,6 @@ public class KeyboardUtil {
 
     public EditText getEd() {
         return ed;
-    }
-
-
-    //初始化滑动handler
-    @SuppressLint("HandlerLeak")
-    private void initScrollHandler(View rootView, ScrollView scrollView) {
-        this.sv_main = scrollView;
-        this.root_view = rootView;
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                if (msg.what == ed.getId()) {
-                    if (sv_main != null)
-                        sv_main.smoothScrollTo(0, scrollTo);
-                }
-            }
-        };
-    }
-
-    //滑动监听
-    private void keyBoardScroll(final EditText editText, int scorllTo) {
-        this.scrollTo = scorllTo;
-        ViewTreeObserver vto_bighexagon = root_view.getViewTreeObserver();
-        vto_bighexagon.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Message msg = new Message();
-                msg.what = editText.getId();
-                mHandler.sendMessageDelayed(msg, 500);
-                // // 防止多次促发
-                root_view.getViewTreeObserver()
-                        .removeGlobalOnLayoutListener(this);
-            }
-        });
     }
 
     //设置一些不需要使用这个键盘的edittext,解决切换问题
@@ -365,7 +292,6 @@ public class KeyboardUtil {
                 return;
             }
             keyboardView.setPreviewEnabled(true);
-            return;
         }
 
         @Override
@@ -401,18 +327,19 @@ public class KeyboardUtil {
             } else if (primaryCode == 0) {
                 // 空白键
             } else if (primaryCode == 123123) {//转换数字键盘
-                isupper = false;
-                showKeyBoardLayout(ed, INPUTTYPE_NUM_ABC, -1);
+                isUpper = false;
+                showKeyBoardLayout(ed, INPUTTYPE_NUM_ABC);
             } else if (primaryCode == 456456) {//转换字母键盘
-                isupper = false;
-                showKeyBoardLayout(ed, INPUTTYPE_ABC, -1);
+                isUpper = false;
+                showKeyBoardLayout(ed, INPUTTYPE_ABC);
             } else if (primaryCode == 789789) {//转换字符键盘
-                isupper = false;
-                showKeyBoardLayout(ed, INPUTTYPE_SYMBOL, -1);
+                isUpper = false;
+                showKeyBoardLayout(ed, INPUTTYPE_SYMBOL);
             } else if (primaryCode == 741741) {
-                showKeyBoardLayout(ed, INPUTTYPE_ABC, -1);
+                showKeyBoardLayout(ed, INPUTTYPE_ABC);
             } else {
                 editable.insert(start, Character.toString((char) primaryCode));
+                Log.d("KeyboardUtil","Character ==="+Character.toString((char) primaryCode) + "primaryCode===" + primaryCode);
             }
         }
     };
@@ -422,8 +349,8 @@ public class KeyboardUtil {
      */
     private void changeKey() {
         List<Key> keylist = abcKeyboard.getKeys();
-        if (isupper) {// 大写切小写
-            isupper = false;
+        if (isUpper) {// 大写切小写
+            isUpper = false;
             for (Key key : keylist) {
                 if (key.label != null && isword(key.label.toString())) {
                     key.label = key.label.toString().toLowerCase();
@@ -431,7 +358,7 @@ public class KeyboardUtil {
                 }
             }
         } else {// 小写切大写
-            isupper = true;
+            isUpper = true;
             for (Key key : keylist) {
                 if (key.label != null && isword(key.label.toString())) {
                     key.label = key.label.toString().toUpperCase();
@@ -452,12 +379,7 @@ public class KeyboardUtil {
 
     private void initKeyBoard(int keyBoardViewID) {
         mActivity = (Activity) mContext;
-        if (inflaterView != null) {
-            keyboardView = (PpKeyBoardView) inflaterView.findViewById(keyBoardViewID);
-        } else {
-            keyboardView = (PpKeyBoardView) mActivity
-                    .findViewById(keyBoardViewID);
-        }
+        keyboardView = (PpKeyBoardView) mRootView.findViewById(keyBoardViewID);
         keyboardView.setEnabled(true);
         keyboardView.setOnKeyboardActionListener(listener);
         keyboardView.setOnTouchListener(new View.OnTouchListener() {
@@ -476,50 +398,57 @@ public class KeyboardUtil {
     }
 
     private void initInputType() {
-        if (inputType == INPUTTYPE_NUM) {
-            // isnum = true;
-            initKeyBoard(R.id.keyboard_view);
-            keyboardView.setPreviewEnabled(false);
-            numKeyboard = new Keyboard(mContext, R.xml.symbols);
-            setMyKeyBoard(numKeyboard);
-        } else if (inputType == INPUTTYPE_NUM_FINISH) {
-            initKeyBoard(R.id.keyboard_view);
-            keyboardView.setPreviewEnabled(false);
-            numKeyboard = new Keyboard(mContext, R.xml.symbols_finish);
-            setMyKeyBoard(numKeyboard);
-        } else if (inputType == INPUTTYPE_NUM_POINT) {
-            initKeyBoard(R.id.keyboard_view);
-            keyboardView.setPreviewEnabled(false);
-            numKeyboard = new Keyboard(mContext, R.xml.symbols_point);
-            setMyKeyBoard(numKeyboard);
-        } else if (inputType == INPUTTYPE_NUM_X) {
-            initKeyBoard(R.id.keyboard_view);
-            keyboardView.setPreviewEnabled(false);
-            numKeyboard = new Keyboard(mContext, R.xml.symbols_x);
-            setMyKeyBoard(numKeyboard);
-        } else if (inputType == INPUTTYPE_NUM_NEXT) {
-            initKeyBoard(R.id.keyboard_view);
-            keyboardView.setPreviewEnabled(false);
-            numKeyboard = new Keyboard(mContext, R.xml.symbols_next);
-            setMyKeyBoard(numKeyboard);
-        } else if (inputType == INPUTTYPE_ABC) {
-            // isnum = false;
-            initKeyBoard(R.id.keyboard_view_abc_sym);
-            keyboardView.setPreviewEnabled(true);
-            abcKeyboard = new Keyboard(mContext, R.xml.symbols_abc);
-            setMyKeyBoard(abcKeyboard);
-        } else if (inputType == INPUTTYPE_SYMBOL) {
-            initKeyBoard(R.id.keyboard_view_abc_sym);
-            keyboardView.setPreviewEnabled(true);
-            symbolKeyboard = new Keyboard(mContext, R.xml.symbols_symbol);
-            setMyKeyBoard(symbolKeyboard);
-        } else if (inputType == INPUTTYPE_NUM_ABC) {
-            initKeyBoard(R.id.keyboard_view);
-            keyboardView.setPreviewEnabled(false);
-            numKeyboard = new Keyboard(mContext, R.xml.symbols_num_abc);
-            setMyKeyBoard(numKeyboard);
-        }
+        switch (inputType) {
+            case INPUTTYPE_NUM:
+                initKeyBoard(R.id.keyboard_view);
+                keyboardView.setPreviewEnabled(false);
+                numKeyboard = new Keyboard(mContext, R.xml.symbols);
+                setMyKeyBoard(numKeyboard);
+                break;
+            case INPUTTYPE_NUM_FINISH:
+                initKeyBoard(R.id.keyboard_view);
+                keyboardView.setPreviewEnabled(false);
+                numKeyboard = new Keyboard(mContext, R.xml.symbols_finish);
+                setMyKeyBoard(numKeyboard);
+                break;
+            case INPUTTYPE_NUM_POINT:
+                initKeyBoard(R.id.keyboard_view);
+                keyboardView.setPreviewEnabled(false);
+                numKeyboard = new Keyboard(mContext, R.xml.symbols_point);
+                setMyKeyBoard(numKeyboard);
+                break;
+            case INPUTTYPE_NUM_X:
+                initKeyBoard(R.id.keyboard_view);
+                keyboardView.setPreviewEnabled(false);
+                numKeyboard = new Keyboard(mContext, R.xml.symbols_x);
+                setMyKeyBoard(numKeyboard);
+                break;
+            case INPUTTYPE_NUM_NEXT:
+                initKeyBoard(R.id.keyboard_view);
+                keyboardView.setPreviewEnabled(false);
+                numKeyboard = new Keyboard(mContext, R.xml.symbols_next);
+                setMyKeyBoard(numKeyboard);
+                break;
+            case INPUTTYPE_ABC:
+                initKeyBoard(R.id.keyboard_view_abc_sym);
+                keyboardView.setPreviewEnabled(true);
+                abcKeyboard = new Keyboard(mContext, R.xml.symbols_abc);
+                setMyKeyBoard(abcKeyboard);
+                break;
+            case INPUTTYPE_SYMBOL:
+                initKeyBoard(R.id.keyboard_view_abc_sym);
+                keyboardView.setPreviewEnabled(true);
+                symbolKeyboard = new Keyboard(mContext, R.xml.symbols_symbol);
+                setMyKeyBoard(symbolKeyboard);
+                break;
+            case INPUTTYPE_NUM_ABC:
+                initKeyBoard(R.id.keyboard_view);
+                keyboardView.setPreviewEnabled(false);
+                numKeyboard = new Keyboard(mContext, R.xml.symbols_num_abc);
+                setMyKeyBoard(numKeyboard);
+                break;
 
+        }
     }
 
     private void setMyKeyBoard(Keyboard newkeyboard) {
@@ -529,12 +458,13 @@ public class KeyboardUtil {
 
     //新的隐藏方法
     public void hideKeyboardLayout() {
-        if (getKeyboardState() == true) {
+        if (getKeyboardState()) {
             if (keyBoardLayout != null)
                 keyBoardLayout.setVisibility(View.GONE);
             if (keyBoardStateChangeListener != null)
                 keyBoardStateChangeListener.KeyBoardStateChange(KEYBOARD_HIDE, ed);
             isShow = false;
+            isUpper = false;
             hideKeyboard();
             ed = null;
         }
@@ -543,16 +473,13 @@ public class KeyboardUtil {
     /**
      * @param editText
      * @param keyBoardType 类型
-     * @param scrollTo     滑动到某个位置,可以是大于等于0的数，其他数不滑动
      */
     //新的show方法
-    public void showKeyBoardLayout(final EditText editText, int keyBoardType, int scrollTo) {
-        if (editText.equals(ed) && getKeyboardState() == true && this.inputType == keyBoardType)
+    public void showKeyBoardLayout(final EditText editText, int keyBoardType) {
+        if (editText.equals(ed) && getKeyboardState() && inputType == keyBoardType)
             return;
 
-        this.inputType = keyBoardType;
-        this.scrollTo = scrollTo;
-        //TODO
+        inputType = keyBoardType;
         if (keyBoardLayout != null && keyBoardLayout.getVisibility() == View.VISIBLE)
             Log.d("KeyboardUtil", "visible");
 
@@ -577,10 +504,6 @@ public class KeyboardUtil {
         showKeyboard();
         if (keyBoardStateChangeListener != null)
             keyBoardStateChangeListener.KeyBoardStateChange(KEYBOARD_SHOW, editText);
-        //用于滑动
-        if (scrollTo >= 0) {
-            keyBoardScroll(editText, scrollTo);
-        }
     }
 
     private void hideKeyboard() {
@@ -608,14 +531,14 @@ public class KeyboardUtil {
      * @description:TODO 输入监听
      */
     public interface InputFinishListener {
-        public void inputHasOver(int onclickType, EditText editText);
+        void inputHasOver(int onclickType, EditText editText);
     }
 
     /**
      * 监听键盘变化
      */
     public interface KeyBoardStateChangeListener {
-        public void KeyBoardStateChange(int state, EditText editText);
+        void KeyBoardStateChange(int state, EditText editText);
     }
 
     public void setKeyBoardStateChangeListener(KeyBoardStateChangeListener listener) {

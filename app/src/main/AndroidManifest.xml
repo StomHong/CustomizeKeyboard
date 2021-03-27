@@ -18,6 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".FirstActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity android:name=".SecondActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
     </application>
 
 </manifest>
