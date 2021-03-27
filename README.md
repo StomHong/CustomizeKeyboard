@@ -23,8 +23,8 @@ dependencies{
    implementation 'com.github.StomHong:CustomizeKeyboard:1.0.2'
 }
 
-}
 ```
+### 1.0.2版本更新说明：1.重新改写，不再需要parent,也不需要scrollView。2.修复了一些bug
 
 ### 1.0.1版本更新说明：去掉了键盘头部“安全键盘文字”，更改了包名
 
